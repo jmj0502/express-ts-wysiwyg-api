@@ -12,4 +12,4 @@ On the otherhand, I also wanted to play around with some interesting technologie
 * __typedi__: While learning about __reflect-metadata__ I discovered __typedi__, a DI container that's pretty dynamic when
 it comes to resolving type requirements. It kinda reminded me of __Autofac__ (.Net) and that's the main reason why it caught my eye.
 
-I've learned a lot until now, so I really hope that everyone that may find this repo also learns a thing or two C;
+I've learned a lot until now, so I really hope that anyone that may find this repo also learns a thing or two C;
