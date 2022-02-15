@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { 
 	Controller, 
 	Delete, 
-	Get, 
+	Get,
 	Post,
 	Put
 } from "../decorators/controller";
