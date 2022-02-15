@@ -3,7 +3,7 @@ This project is inteded to be somehow "small", since it works as proof of concep
 store and retrieve wysiwyg data while implementing interesting practices regarding the use of decorators, DI containers, etc.
 
 ## Motivation
-I've trying to learn how to "optimize" the structure of my express projects for a quile a while now, in order to apply
+I've been trying to learn how to "optimize" the structure of my express projects for a quile a while now, in order to apply
 interesting concepts like DI (dependency injection), different design patterns and other practices that may bring an interesting level of abstraction to the overall express ecosystem.
 
 On the otherhand, I also wanted to play around with some interesting technologies that I haven't been able to use on my day-to-day basis. When it comes to the backend some of those technologies are:
