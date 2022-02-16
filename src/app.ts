@@ -3,7 +3,9 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 import express from "express";
 import "./controllers/post.controller";
+import "./controllers/user.controller";
 import { router } from "./decorators/controller";
+router.stack.forEach(layer => console.log(layer.route))
 
 const app: express.Application = express();
 const applicationPort = 4000;
