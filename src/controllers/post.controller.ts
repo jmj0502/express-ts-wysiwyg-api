@@ -9,7 +9,7 @@ import {
 } from "../decorators/controller";
 import { PostService } from "../services/post.service";
 import { Post as blog } from "@prisma/client";
-import { PostDTO, UpdatePostDTO } from "../dtos/post.dto";
+import { PostDTO } from "../dtos/post.dto";
 
 @Controller('/api/blog')
 @Service()
@@ -49,7 +49,7 @@ export default class PostController {
 	public async updatePost(req: Request, res: Response) {
 		const updatedPost: blog | null = await this.postService.updatePost(
 			parseInt(req.params["id"]), 
-			<UpdatePostDTO>req.body
+			<Partial<PostDTO>>req.body
 		);
 		if (!updatedPost) {
 			return res.status(500).json({success: false, message: "Couldn't update post!"});

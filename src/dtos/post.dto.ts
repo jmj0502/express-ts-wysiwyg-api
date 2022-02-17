@@ -4,10 +4,3 @@ export interface PostDTO {
 	content: string,
 	authorId: number
 }
-
-export interface UpdatePostDTO {
-	title?: string,
-	coverImg?: string,	
-	content?: string,
-	authorId?: number
-}

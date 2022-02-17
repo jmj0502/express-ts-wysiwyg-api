@@ -1,6 +1,6 @@
 import { Post } from "@prisma/client";
 import { Service } from "typedi";
-import { PostDTO, UpdatePostDTO } from "../dtos/post.dto";
+import { PostDTO } from "../dtos/post.dto";
 import { PostRepository } from "../repository/post.repository";
 
 @Service()
@@ -36,7 +36,7 @@ export class PostService {
 		return createdPost;
 	}
 
-	public async updatePost(postId: number, postData: UpdatePostDTO): Promise<Post | null> {
+	public async updatePost(postId: number, postData: Partial<PostDTO>): Promise<Post | null> {
 		let updatedPost: Post | null;
 		try {
 			updatedPost = await this.postRepository.update(postId, postData);
