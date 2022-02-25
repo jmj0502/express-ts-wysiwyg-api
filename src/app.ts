@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 import express from "express";
+import cors from "cors";
 import "./controllers/post.controller";
 import "./controllers/user.controller";
 import { router } from "./decorators/controller";
@@ -11,6 +12,7 @@ const applicationPort = 4000;
 app.set('port', applicationPort);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 
 app.use(router);
 

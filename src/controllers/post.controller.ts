@@ -20,6 +20,7 @@ export default class PostController {
 
 	@Get("")
 	public async getPosts(req: Request, res: Response): Promise<Response<Array<blog>>> {
+		console.log("Executing POst Get")
 		const posts: Array<blog> = await this.postService.getPosts();
 		return res.status(200).json({posts: posts});	
 	}
