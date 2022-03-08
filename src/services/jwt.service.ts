@@ -6,7 +6,7 @@ export class JWTService {
 	constructor() {}
 
 	public generateToken(userData: {email: string}): string {
-		const token = sign(userData, 'secret', {
+		const token = sign(userData, (process.env.JWT_SECRET as string), {
 			expiresIn: "12h"
 		});
 		return token;
@@ -14,7 +14,7 @@ export class JWTService {
 
 	public async verifyToken(token: string): Promise<{email: string} | null> {
 		try {
-			const payload = await verify(token, 'secret') as {email: string};
+			const payload = await verify(token, (process.env.JWT_SECRET as string)) as {email: string};
 			return payload;
 		} catch(err) {
 			console.log(err);
