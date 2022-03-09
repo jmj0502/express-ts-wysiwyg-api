@@ -6,6 +6,7 @@ import {
 import { UserService } from "../services/user.service";
 import { Request, Response } from "express";
 import { Service } from "typedi";
+import { User } from "@prisma/client";
 
 @Controller("/api/users")
 @Service()
@@ -14,18 +15,9 @@ export class UserController {
 		private userService: UserService
 	) {}
 
-	@Post("")
-	public async registerUser(req: Request, res: Response): Promise<Response> {
-		const result = await this.userService.createUser(req.body['email']);
-		if (!result) {
-			return res.status(500).json({success: false, message: "Something went wrong!"});
-		}
-		return res.status(201).json({success: true, user: result});
-	}
-
-	@Get("")
-	public async logIn(req: Request, res: Response): Promise<Response> {
-		const result = await this.userService.findUser(req.body['email']);
+	@Get(":email")
+	public async getUser(req: Request, res: Response): Promise<Response> {
+		const result = await this.userService.findUser(req.params['email']);
 		if (!result) {
 			return res.status(404).json({success: false, message: "Couldn't find the provided user."});
 		}
