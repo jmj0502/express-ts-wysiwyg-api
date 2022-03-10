@@ -20,11 +20,14 @@ export class AuthController {
 	@Post("sign-up")
 	public async signUp(req: Request, res: Response): Promise<Response> {
 		const userInfo = await this.authService.singIn(req.body['token'])
-		const existingUser = this.usersService.findUser(userInfo?.email as string);
+		const existingUser = await this.usersService.findUser(userInfo?.email as string);
+		let accessToken: string;
 		if (!existingUser) {
-			const newUser = this.usersService.createUser(userInfo?.email as string);
-			const accessToken = this.jwtService.generateToken(existingUser);
+			const newUser = await this.usersService.createUser(userInfo?.email as string);
+			accessToken = this.jwtService.generateToken({email: newUser?.email as string});
+			return res.status(200).json({success: true, token: accessToken, message: "success"});
 		}
-		return res.status(200).json({success: true, message:"logged in"});
+		accessToken = await this.jwtService.generateToken({email: existingUser.email});
+		return res.status(200).json({success: true, token: accessToken, message: "success"});
 	}
 }
