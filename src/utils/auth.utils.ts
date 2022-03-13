@@ -1,6 +1,10 @@
 export const unprotectedRoutes = [
 	{
-		path: '/blog',
-		method: 'POST'
+		path: '/auth/sign-up',
+		method: "POST"
+	},
+	{
+		path: '/blog/',
+		method: 'GET'
 	}
 ]; 
