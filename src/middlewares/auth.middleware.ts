@@ -10,7 +10,7 @@ export class AuthMiddleware {
 	) {}
 
 	public verifyAuth() {
-		return (req: Request, res: Response, next: NextFunction) => {
+		return async (req: Request, res: Response, next: NextFunction) => {
 			const isUnprotected = unprotectedRoutes.findIndex(route => route.path === req.path && route.method === req.method);
 			console.log("ROUTES INFO");
 			console.log(req.method);
@@ -20,7 +20,7 @@ export class AuthMiddleware {
 				console.log("Unprotected route");
 				return next();
 			}
-			const validatedToken = this.jwtService.verifyToken(<string>req.headers.authorization);
+			const validatedToken = await this.jwtService.verifyToken((<string>req.headers.authorization).split(" ")[1]);
 			if (!validatedToken) {
 				return res.status(401).json({success: false, message: "Unauthorized!"});
 			}
