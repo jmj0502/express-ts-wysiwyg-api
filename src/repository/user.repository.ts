@@ -7,11 +7,12 @@ import { UserRegistrationParameters } from "../utils/types/user.types";
 export class UserRepository {
 	constructor() {}
 
-	public async create({email, name}: UserRegistrationParameters): Promise<User | null> {
+	public async create({email, name, profilePic}: UserRegistrationParameters): Promise<User | null> {
 		const user = await prisma.user.create({
 			data: {
-				email: email,
-				fullName: name 
+				email,
+				fullName: name,
+				profilePic 
 			}
 		});
 		if (!user) {

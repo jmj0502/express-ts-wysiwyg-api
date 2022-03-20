@@ -25,7 +25,8 @@ export class AuthController {
 		if (!existingUser) {
 			const newUser = await this.usersService.createUser({
 				email: userInfo?.email as string, 
-				name: `${userInfo?.given_name} ${userInfo?.family_name}`
+				name: `${userInfo?.given_name} ${userInfo?.family_name}`,
+				profilePic: userInfo?.picture as string
 			});
 			accessToken = this.jwtService.generateToken({email: newUser?.email as string});
 			return res.status(200).json({success: true, token: accessToken, user: newUser, message: "success"});
