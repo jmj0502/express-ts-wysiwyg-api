@@ -8,7 +8,11 @@ export class PostRepository {
 	constructor() {}
 
 	public async getMany(): Promise<Array<Post>> {
-		const posts = await prisma.post.findMany();
+		const posts = await prisma.post.findMany({
+			include: {
+				author: true
+			}
+		});
 		return posts;
 	}
 
@@ -17,6 +21,9 @@ export class PostRepository {
 			where: {
 				id: postId
 			},
+			include: {
+				author: true  
+			}
 		});
 		if (!post) {
 			return null;
