@@ -1,15 +1,17 @@
 import { prisma } from "../app"; 
 import { Service } from "typedi";
 import { User } from "@prisma/client";
+import { UserRegistrationParameters } from "../utils/types/user.types";
 
 @Service()
 export class UserRepository {
 	constructor() {}
 
-	public async create(email: string): Promise<User | null> {
+	public async create({email, name}: UserRegistrationParameters): Promise<User | null> {
 		const user = await prisma.user.create({
 			data: {
-				email: email 
+				email: email,
+				fullName: name 
 			}
 		});
 		if (!user) {
