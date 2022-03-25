@@ -1,8 +1,10 @@
 import { Router } from "express";
 import Container from "typedi";
 import { Route } from "./controller.interfaces";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export const router: Router = Router({mergeParams: true});
+const authMiddleware = Container.get(AuthMiddleware);
 
 /**
  * Decorator factory that should be applied to any class that should be treated as a constructor.
@@ -17,7 +19,7 @@ export function Controller(prefix: string) {
 		const routes = Reflect.getMetadata('routes', constructor) as Array<Route>;
 		const instance: any = Container.get(constructor);
 		routes.forEach((route: Route) => {
-			router[route.method](`${prefix}/${route.path}`, instance[route.methodName].bind(instance));
+			router[route.method](`${prefix}/${route.path}`, authMiddleware.verifyAuth(), instance[route.methodName].bind(instance));
 		});
 	}
 }
