@@ -1,6 +1,7 @@
 import { Service } from "typedi";
 import { Request, Response } from "express";
 import { 
+	AuthRequired,
 	Controller, 
 	Delete, 
 	Get,
@@ -18,6 +19,7 @@ export default class PostController {
 		private postService: PostService
 	) {}
 
+	@AuthRequired()
 	@Get("")
 	public async getPosts(req: Request, res: Response): Promise<Response<Array<blog>>> {
 		console.log("Executing Post Get")

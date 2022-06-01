@@ -19,7 +19,18 @@ export function Controller(prefix: string) {
 		const routes = Reflect.getMetadata('routes', constructor) as Array<Route>;
 		const instance: any = Container.get(constructor);
 		routes.forEach((route: Route) => {
-			router[route.method](`${prefix}/${route.path}`, authMiddleware.verifyAuth(), instance[route.methodName].bind(instance));
+			if (route.protected) { 
+				router[route.method](
+					`${prefix}/${route.path}`, 
+					authMiddleware.verifyAuth(), 
+					instance[route.methodName].bind(instance)
+				);
+			} else  {
+				router[route.method](
+					`${prefix}/${route.path}`, 
+					instance[route.methodName].bind(instance)
+				);
+			}
 		});
 	}
 }
@@ -37,7 +48,8 @@ export function Get(route: string) {
 		routes.push({
 			path: route,
 			method: 'get',
-			methodName: propertyKey
+			methodName: propertyKey,
+			middlewares: []
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -56,7 +68,8 @@ export function Post(route: string) {
 		routes.push({
 			path: route,
 			method: 'post',
-			methodName: propertyKey
+			methodName: propertyKey,
+			middlewares: []
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -75,7 +88,8 @@ export function Put(route: string) {
 		routes.push({
 			path: route,
 			method: 'put',
-			methodName: propertyKey
+			methodName: propertyKey,
+			middlewares: []
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -94,8 +108,23 @@ export function Delete(route: string) {
 		routes.push({
 			path: route,
 			method: 'delete',
-			methodName: propertyKey
+			methodName: propertyKey,
+			middlewares: []
 		});
+		Reflect.defineMetadata('routes', routes, target.constructor);
+	}
+}
+
+export function AuthRequired() {
+	return function(target: Object, propertyKey: string) {
+		const routes = Reflect.getMetadata('routes', target.constructor) as Array<Route>;
+		console.log("Metadata")
+		console.log(routes);
+		console.log("Metadata")
+		routes[0]['protected'] = true;
+		//routes[0]['middlewares'].push(
+		//	authMiddleware.verifyAuth()
+		//)
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
 }
