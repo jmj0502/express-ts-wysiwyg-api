@@ -19,18 +19,11 @@ export function Controller(prefix: string) {
 		const routes = Reflect.getMetadata('routes', constructor) as Array<Route>;
 		const instance: any = Container.get(constructor);
 		routes.forEach((route: Route) => {
-			if (route.protected) { 
-				router[route.method](
-					`${prefix}/${route.path}`, 
-					authMiddleware.verifyAuth(), 
-					instance[route.methodName].bind(instance)
-				);
-			} else  {
-				router[route.method](
-					`${prefix}/${route.path}`, 
-					instance[route.methodName].bind(instance)
-				);
-			}
+			router[route.method](
+				`${prefix}/${route.path}`,
+				...Object.values(route.middlewares),
+				instance[route.methodName].bind(instance)
+			)
 		});
 	}
 }
@@ -49,7 +42,7 @@ export function Get(route: string) {
 			path: route,
 			method: 'get',
 			methodName: propertyKey,
-			middlewares: []
+			middlewares: {} 
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -69,7 +62,7 @@ export function Post(route: string) {
 			path: route,
 			method: 'post',
 			methodName: propertyKey,
-			middlewares: []
+			middlewares: {} 
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -89,7 +82,7 @@ export function Put(route: string) {
 			path: route,
 			method: 'put',
 			methodName: propertyKey,
-			middlewares: []
+			middlewares: {} 
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
@@ -109,22 +102,19 @@ export function Delete(route: string) {
 			path: route,
 			method: 'delete',
 			methodName: propertyKey,
-			middlewares: []
+			middlewares: {}
 		});
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
 }
 
+/**
+ * Decorator factory that will be on charge of adding token based auth to a specific route.
+ */
 export function AuthRequired() {
 	return function(target: Object, propertyKey: string) {
 		const routes = Reflect.getMetadata('routes', target.constructor) as Array<Route>;
-		console.log("Metadata")
-		console.log(routes);
-		console.log("Metadata")
-		routes[0]['protected'] = true;
-		//routes[0]['middlewares'].push(
-		//	authMiddleware.verifyAuth()
-		//)
+		routes[0]['middlewares']['auth'] = authMiddleware.verifyAuth()
 		Reflect.defineMetadata('routes', routes, target.constructor);
 	}
 }
